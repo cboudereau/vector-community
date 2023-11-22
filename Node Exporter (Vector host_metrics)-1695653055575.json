@@ -70,7 +70,20 @@
   "gnetId": 1860,
   "graphTooltip": 1,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Grafana Dashboard",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://grafana.com/grafana/dashboards/19650-node-exporter-vector-host-metrics/"
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -164,7 +177,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
@@ -172,7 +185,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "(sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode!=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))) * 100",
+          "expr": "(sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode!=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))) * 100",
           "hide": false,
           "intervalFactor": 1,
           "legendFormat": "",
@@ -249,14 +262,14 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "avg(node_load5{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
+          "expr": "avg(node_load5{host=\"$host\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}) by (cpu)) * 100",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -332,14 +345,14 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "avg(node_load15{instance=\"$node\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu)) * 100",
+          "expr": "avg(node_load15{host=\"$host\",job=\"$job\"}) /  count(count(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}) by (cpu)) * 100",
           "hide": false,
           "intervalFactor": 1,
           "refId": "A",
@@ -406,7 +419,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
@@ -414,7 +427,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "((node_memory_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_free_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_total_bytes{instance=\"$node\",job=\"$job\"} )) * 100",
+          "expr": "((node_memory_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_free_bytes{host=\"$host\",job=\"$job\"}) / (node_memory_total_bytes{host=\"$host\",job=\"$job\"} )) * 100",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -427,7 +440,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "100 - ((node_memory_available_bytes{instance=\"$node\",job=\"$job\"} * 100) / node_memory_total_bytes{instance=\"$node\",job=\"$job\"})",
+          "expr": "100 - ((node_memory_available_bytes{host=\"$host\",job=\"$job\"} * 100) / node_memory_total_bytes{host=\"$host\",job=\"$job\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -503,14 +516,14 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "((node_memory_swap_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_swap_free_bytes{instance=\"$node\",job=\"$job\"}) / (node_memory_swap_total_bytes{instance=\"$node\",job=\"$job\"} )) * 100",
+          "expr": "((node_memory_swap_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_swap_free_bytes{host=\"$host\",job=\"$job\"}) / (node_memory_swap_total_bytes{host=\"$host\",job=\"$job\"} )) * 100",
           "intervalFactor": 1,
           "refId": "A",
           "step": 240
@@ -584,14 +597,14 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "100 - ((node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_total_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"})",
+          "expr": "100 - ((node_filesystem_free_bytes{host=\"$host\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_total_bytes{host=\"$host\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -663,14 +676,14 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "count(count(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}) by (cpu))",
+          "expr": "count(count(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}) by (cpu))",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -745,7 +758,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
@@ -753,7 +766,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "node_uptime{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_uptime{host=\"$host\",job=\"$job\"}",
           "intervalFactor": 1,
           "range": true,
           "refId": "A",
@@ -830,14 +843,14 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_filesystem_total_bytes{instance=\"$node\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"}",
+          "expr": "node_filesystem_total_bytes{host=\"$host\",job=\"$job\",mountpoint=\"/\",fstype!=\"rootfs\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -911,14 +924,14 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_total_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_total_bytes{host=\"$host\",job=\"$job\"}",
           "intervalFactor": 1,
           "refId": "A",
           "step": 240
@@ -990,14 +1003,14 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_swap_total_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_swap_total_bytes{host=\"$host\",job=\"$job\"}",
           "intervalFactor": 1,
           "refId": "A",
           "step": 240
@@ -1057,6 +1070,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1228,7 +1242,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"system\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"system\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -1243,7 +1257,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"user\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"user\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -1258,7 +1272,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"iowait\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"iowait\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Busy Iowait",
@@ -1272,7 +1286,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=~\".*irq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=~\".*irq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Busy IRQs",
@@ -1286,7 +1300,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq'}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq'}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Busy Other",
@@ -1300,7 +1314,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Idle",
@@ -1337,6 +1351,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1769,7 +1784,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_total_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_total_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -1782,7 +1797,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_free_bytes{instance=\"$node\",job=\"$job\"} - (node_memory_cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_buffers_bytes{instance=\"$node\",job=\"$job\"} + node_memory_SReclaimable_bytes{instance=\"$node\",job=\"$job\"})",
+          "expr": "node_memory_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_free_bytes{host=\"$host\",job=\"$job\"} - (node_memory_cached_bytes{host=\"$host\",job=\"$job\"} + node_memory_buffers_bytes{host=\"$host\",job=\"$job\"} + node_memory_SReclaimable_bytes{host=\"$host\",job=\"$job\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -1795,7 +1810,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_cached_bytes{instance=\"$node\",job=\"$job\"} + node_memory_buffers_bytes{instance=\"$node\",job=\"$job\"} + node_memory_SReclaimable_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_cached_bytes{host=\"$host\",job=\"$job\"} + node_memory_buffers_bytes{host=\"$host\",job=\"$job\"} + node_memory_SReclaimable_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "RAM Cache + Buffer",
@@ -1807,7 +1822,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_free_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_free_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "RAM Free",
@@ -1819,7 +1834,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "(node_memory_swap_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_swap_free_bytes{instance=\"$node\",job=\"$job\"})",
+          "expr": "(node_memory_swap_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_swap_free_bytes{host=\"$host\",job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "SWAP Used",
@@ -1855,6 +1870,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2275,7 +2291,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+          "expr": "irate(node_network_receive_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])*8",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "recv {{device}}",
@@ -2287,7 +2303,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+          "expr": "irate(node_network_transmit_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])*8",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "trans {{device}} ",
@@ -2323,6 +2339,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2387,7 +2404,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "100 - ((node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'} * 100) / node_filesystem_total_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'})",
+          "expr": "100 - ((node_filesystem_free_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'} * 100) / node_filesystem_total_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{mountpoint}}",
@@ -2472,8 +2489,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2640,7 +2656,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"system\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"system\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2655,7 +2671,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"user\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"user\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "User - Normal processes executing in user mode",
@@ -2669,7 +2685,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"nice\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"nice\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Nice - Niced processes executing in user mode",
@@ -2683,7 +2699,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"iowait\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"iowait\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Iowait - Waiting for I/O to complete",
@@ -2697,7 +2713,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"irq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"irq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Irq - Servicing interrupts",
@@ -2711,7 +2727,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"softirq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"softirq\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Softirq - Servicing softirqs",
@@ -2725,7 +2741,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"steal\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"steal\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Steal - Time spent in other operating systems when running in a virtualized environment",
@@ -2739,7 +2755,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "sum by(instance) (irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\", mode=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])))",
+          "expr": "sum by(instance) (irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\", mode=\"idle\"}[$__rate_interval])) / on(instance) group_left sum by (instance)((irate(node_cpu_seconds_total{host=\"$host\",job=\"$job\"}[$__rate_interval])))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -2800,8 +2816,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3147,7 +3162,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_free_bytes{instance=\"$node\",job=\"$job\"} - node_memory_buffers_bytes{instance=\"$node\",job=\"$job\"} - node_memory_cached_bytes{instance=\"$node\",job=\"$job\"} - node_memory_Slab_bytes{instance=\"$node\",job=\"$job\"} - node_memory_PageTables_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapCached_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_free_bytes{host=\"$host\",job=\"$job\"} - node_memory_buffers_bytes{host=\"$host\",job=\"$job\"} - node_memory_cached_bytes{host=\"$host\",job=\"$job\"} - node_memory_Slab_bytes{host=\"$host\",job=\"$job\"} - node_memory_PageTables_bytes{host=\"$host\",job=\"$job\"} - node_memory_SwapCached_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3160,7 +3175,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_PageTables_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_PageTables_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3173,7 +3188,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_SwapCached_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_SwapCached_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "SwapCache - Memory that keeps track of pages that have been fetched from swap but not yet been modified",
@@ -3185,7 +3200,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_Slab_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_Slab_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3198,7 +3213,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_cached_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_cached_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3211,7 +3226,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_buffers_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_buffers_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3224,7 +3239,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_free_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_free_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3237,7 +3252,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "(node_memory_swap_total_bytes{instance=\"$node\",job=\"$job\"} - node_memory_swap_free_bytes{instance=\"$node\",job=\"$job\"})",
+          "expr": "(node_memory_swap_total_bytes{host=\"$host\",job=\"$job\"} - node_memory_swap_free_bytes{host=\"$host\",job=\"$job\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3250,7 +3265,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_memory_HardwareCorrupted_bytes{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_memory_HardwareCorrupted_bytes{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -3308,8 +3323,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3426,7 +3440,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_receive_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+          "expr": "irate(node_network_receive_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])*8",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Receive",
@@ -3438,7 +3452,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_transmit_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])*8",
+          "expr": "irate(node_network_transmit_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])*8",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Transmit",
@@ -3497,8 +3511,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3542,7 +3555,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_filesystem_total_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'} - node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
+          "expr": "node_filesystem_total_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'} - node_filesystem_free_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{mountpoint}}",
@@ -3600,8 +3613,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3973,7 +3985,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_reads_completed_total{instance=\"$node\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
+          "expr": "irate(node_disk_reads_completed_total{host=\"$host\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
           "intervalFactor": 4,
           "legendFormat": "{{device}} - Reads completed",
           "refId": "A",
@@ -3984,7 +3996,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_writes_completed_total{instance=\"$node\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
+          "expr": "irate(node_disk_writes_completed_total{host=\"$host\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Writes completed",
           "refId": "B",
@@ -4041,8 +4053,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4201,7 +4212,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_read_bytes_total{instance=\"$node\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
+          "expr": "irate(node_disk_read_bytes_total{host=\"$host\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -4214,7 +4225,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_written_bytes_total{instance=\"$node\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
+          "expr": "irate(node_disk_written_bytes_total{host=\"$host\",job=\"$job\",device=~\"$diskdevices\"}[$__rate_interval])",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -4273,8 +4284,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4318,7 +4328,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_load1{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_load1{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 4,
           "legendFormat": "Load 1m",
@@ -4330,7 +4340,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_load5{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_load5{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 4,
           "legendFormat": "Load 5m",
@@ -4342,7 +4352,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_load15{instance=\"$node\",job=\"$job\"}",
+          "expr": "node_load15{host=\"$host\",job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 4,
           "legendFormat": "Load 15m",
@@ -4426,8 +4436,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4784,7 +4793,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_reads_completed_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_disk_reads_completed_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "intervalFactor": 4,
           "legendFormat": "{{device}} - Reads completed",
           "refId": "A",
@@ -4795,7 +4804,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_writes_completed_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_disk_writes_completed_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Writes completed",
           "refId": "B",
@@ -4852,8 +4861,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5210,7 +5218,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_read_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_disk_read_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "intervalFactor": 4,
           "legendFormat": "{{device}} - Read bytes",
@@ -5222,7 +5230,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_disk_written_bytes_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_disk_written_bytes_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Written bytes",
@@ -5307,8 +5315,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5352,7 +5359,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
+          "expr": "node_filesystem_free_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -5366,7 +5373,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
+          "expr": "node_filesystem_free_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -5379,7 +5386,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "node_filesystem_total_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
+          "expr": "node_filesystem_total_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -5439,8 +5446,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5485,7 +5491,7 @@
             "uid": "${DS_MIMIR}"
           },
           "editorMode": "code",
-          "expr": "node_filesystem_free_bytes{instance=\"$node\",job=\"$job\",device!~'rootfs'}",
+          "expr": "node_filesystem_free_bytes{host=\"$host\",job=\"$job\",device!~'rootfs'}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -5570,8 +5576,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5689,7 +5694,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_receive_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_network_receive_packets_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -5702,7 +5707,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_transmit_packets_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_network_transmit_packets_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -5760,8 +5765,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5819,7 +5823,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_receive_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_network_receive_errs_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Receive errors",
@@ -5831,7 +5835,7 @@
             "type": "prometheus",
             "uid": "${DS_MIMIR}"
           },
-          "expr": "irate(node_network_transmit_errs_total{instance=\"$node\",job=\"$job\"}[$__rate_interval])",
+          "expr": "irate(node_network_transmit_errs_total{host=\"$host\",job=\"$job\"}[$__rate_interval])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{device}} - Rransmit errors",
@@ -5855,7 +5859,29 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "default",
+          "value": "default"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "vector",
+          "value": "vector"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_MIMIR}"
@@ -5886,16 +5912,16 @@
           "type": "prometheus",
           "uid": "${DS_MIMIR}"
         },
-        "definition": "label_values(node_uptime{job=\"$job\"}, instance)",
+        "definition": "label_values(node_uptime{job=\"$job\"},host)",
         "hide": 0,
         "includeAll": false,
         "label": "Host:",
         "multi": false,
-        "name": "node",
+        "name": "host",
         "options": [],
         "query": {
-          "query": "label_values(node_uptime{job=\"$job\"}, instance)",
-          "refId": "StandardVariableQuery"
+          "query": "label_values(node_uptime{job=\"$job\"},host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -5961,6 +5987,6 @@
   "timezone": "browser",
   "title": "Node Exporter (Vector host_metrics)",
   "uid": "rYdddlPWk",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

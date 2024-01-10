@@ -6,6 +6,10 @@ Promoting a dashboard on grafana lab requires an account which for this fork has
 
 For the sake of the simplicity, a fork has been made to promote the work done from https://github.com/zamazan4ik and https://github.com/cboudereau.
 
+## Useful References
+- [Vector Intro](https://o11y-weekly.github.io/2023-11-16_Meet_Vector/)
+- [full vector hands-on with docker compose](https://o11y-weekly.github.io/2023-11-23_Vector_in_action/)
+
 ## Dashboards
 
 ### Vector Monitoring
